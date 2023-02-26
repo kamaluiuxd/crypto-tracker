@@ -28,14 +28,19 @@ const Carousel = () => {
 	};
 
 	const items = trend.map((coin) => {
-		const profit = coin.price_change_percentage_24h >= 0;
+		const profit = coin.price_change_percentage_24h > 0;
 
 		return (
 			<div className="text-center">
 				<Link to={`/coins/${coin.id}`} className="flex flex-col items-center space-y-2">
 					<img src={coin.image} alt={coin.name} className=" w-[80px]" />
 					<span>{coin.symbol}</span>
-					<span>
+					<span
+						className="font-bold bg-white px-2 py-1 rounded"
+						style={{
+							color: profit ? "green" : "red",
+						}}
+					>
 						{profit && "+"}
 						{coin.price_change_percentage_24h?.toFixed(2)}%
 					</span>

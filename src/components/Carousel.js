@@ -20,7 +20,10 @@ const Carousel = () => {
 	};
 	useEffect(() => {
 		fetchTrendCoins();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [currency]);
+
+	// console.log(trend);
 
 	const responsive = {
 		0: { items: 2 },
@@ -35,14 +38,9 @@ const Carousel = () => {
 				<Link to={`/coins/${coin.id}`} className="flex flex-col items-center space-y-2">
 					<img src={coin.image} alt={coin.name} className=" w-[80px]" />
 					<span>{coin.symbol}</span>
-					<span
-						className="font-bold bg-white px-2 py-1 rounded"
-						style={{
-							color: profit ? "green" : "red",
-						}}
-					>
+					<span className="font-bold  px-2 py-1 rounded" style={{ color: profit ? "green" : "red" }}>
 						{profit && "+"}
-						{coin.price_change_percentage_24h?.toFixed(2)}%
+						{coin.price_change_percentage_24h.toFixed(2)}%
 					</span>
 					<span>
 						{symbol} {numberWithCommas(coin.current_price.toFixed(2))}
@@ -52,8 +50,6 @@ const Carousel = () => {
 		);
 	});
 
-	console.log(trend);
-
 	return (
 		<div className="w-[800px]">
 			<AliceCarousel
@@ -62,6 +58,7 @@ const Carousel = () => {
 				autoPlayInterval={1000}
 				animationDuration={1500}
 				disableDotsControls
+				disableButtonsControls
 				responsive={responsive}
 				autoPlay
 				items={items}

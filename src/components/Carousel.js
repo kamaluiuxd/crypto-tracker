@@ -1,54 +1,24 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
 import AliceCarousel from "react-alice-carousel";
-import { Link } from "react-router-dom";
-import { TrendingCoins } from "../config/api";
 import { useCrypto } from "../context/CryptoContext";
-
-export function numberWithCommas(x) {
-	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
+import CarouselCard from "./CarouselCard";
 
 const Carousel = () => {
-	const { currency, symbol } = useCrypto();
+	const { trend } = useCrypto();
+	const items = trend.map((coin) => {
+		return (
+			<div className="text-center">
+				<CarouselCard coin={coin} />
+			</div>
+		);
+	});
 
-	const [trend, setTrend] = useState([]);
-
-	const fetchTrendCoins = async () => {
-		const { data } = await axios.get(TrendingCoins(currency));
-		setTrend(data);
-	};
-	useEffect(() => {
-		fetchTrendCoins();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currency]);
-
-	// console.log(trend);
+	console.log(items);
 
 	const responsive = {
 		0: { items: 2 },
 		512: { items: 4 },
 	};
-
-	const items = trend.map((coin) => {
-		const profit = coin.price_change_percentage_24h > 0;
-
-		return (
-			<div className="text-center">
-				<Link to={`/coins/${coin.id}`} className="flex flex-col items-center space-y-2">
-					<img src={coin.image} alt={coin.name} className=" w-[80px]" />
-					<span>{coin.symbol}</span>
-					<span className="font-bold  px-2 py-1 rounded" style={{ color: profit ? "green" : "red" }}>
-						{profit && "+"}
-						{coin.price_change_percentage_24h.toFixed(2)}%
-					</span>
-					<span>
-						{symbol} {numberWithCommas(coin.current_price.toFixed(2))}
-					</span>
-				</Link>
-			</div>
-		);
-	});
 
 	return (
 		<div className="w-[800px]">
